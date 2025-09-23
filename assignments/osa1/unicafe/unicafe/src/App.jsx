@@ -18,7 +18,7 @@ const Buttons = ({ handleGoodClick, handleNeutralClick, handleBadClick}) => {
   );
 };
 
-const Stats = ({good,neutral,bad,countAll,countAverage,countPositive}) => {
+const Statistics = ({good,neutral,bad,countAll,countAverage,countPositive}) => {
   return (
     <div>
       <h1>Statistics</h1>
@@ -58,7 +58,7 @@ const App = () => {
         handleNeutralClick={handleNeutralClick} 
         handleBadClick={handleBadClick}
       />
-      <Stats 
+      <Statistics 
         good={good} 
         neutral={neutral} 
         bad={bad}
