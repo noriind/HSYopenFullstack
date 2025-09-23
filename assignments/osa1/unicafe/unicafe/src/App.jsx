@@ -8,15 +8,27 @@ const Header = () => {
   )
 }
 
+const Button = ({ handleClick, text }) => (
+  <button onClick={handleClick}>
+    {text}
+  </button>
+)
+
 const Buttons = ({ handleGoodClick, handleNeutralClick, handleBadClick}) => {
   return (
     <div> 
-      <button onClick={handleGoodClick}>Good</button>
-      <button onClick={handleNeutralClick}>Neutral</button>
-      <button onClick={handleBadClick}>Bad</button>
+      <Button handleClick={handleGoodClick} text="good" />
+      <Button handleClick={handleNeutralClick}text="neutral"/>
+      <Button handleClick={handleBadClick}text="bad"/>
     </div>
   );
 };
+
+const StatisticLine = ({ text, value }) => {
+  return (
+    <p>{text}: {value}</p>
+  )
+}
 
 const Statistics = ({good,neutral,bad,countAll,countAverage,countPositive}) => {
   if (countAll === 0) {
@@ -30,12 +42,12 @@ const Statistics = ({good,neutral,bad,countAll,countAverage,countPositive}) => {
   return (
     <div>
       <h1>Statistics</h1>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
-      <p>All feedback: {countAll}</p>
-      <p>Average feedback: {countAverage}</p>
-      <p>Positive feedback: {countPositive} %</p>
+      <StatisticLine text="Good" value={good} />
+      <StatisticLine text="Neutral" value={neutral} />
+      <StatisticLine text="Bad" value={bad} />
+      <StatisticLine text="All feedback" value={countAll} />
+      <StatisticLine text="Average feedback" value={countAverage} />
+      <StatisticLine text="Positive feedback" value={`${countPositive} %`} />
     </div>
   )
 }
