@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { use, useState } from 'react'
 
 const Header = () => {
   return (
@@ -19,6 +19,14 @@ const Buttons = ({ handleGoodClick, handleNeutralClick, handleBadClick}) => {
 };
 
 const Statistics = ({good,neutral,bad,countAll,countAverage,countPositive}) => {
+  if (countAll === 0) {
+    return (
+      <div>
+        <h1>Statistics</h1>
+        <p>No feedback submitted</p>
+      </div>
+    )
+  }
   return (
     <div>
       <h1>Statistics</h1>
