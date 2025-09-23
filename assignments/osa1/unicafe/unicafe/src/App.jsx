@@ -18,13 +18,16 @@ const Buttons = ({ handleGoodClick, handleNeutralClick, handleBadClick}) => {
   );
 };
 
-const Stats = ({good,neutral,bad}) => {
+const Stats = ({good,neutral,bad,countAll,countAverage,countPositive}) => {
   return (
     <div>
       <h1>Statistics</h1>
       <p>Good: {good}</p>
       <p>Neutral: {neutral}</p>
       <p>Bad: {bad}</p>
+      <p>All feedback: {countAll}</p>
+      <p>Average feedback: {countAverage}</p>
+      <p>Positive feedback: {countPositive} %</p>
     </div>
   )
 }
@@ -43,6 +46,10 @@ const App = () => {
   const handleBadClick = () =>
     setBad(bad + 1)
 
+  const total = good + neutral + bad
+  const average = total === 0 ? 0 : (good - bad) / total
+  const positivePercentage = total === 0 ? 0 : (good / total) * 100
+
   return (
     <div>
       <Header />
@@ -55,6 +62,9 @@ const App = () => {
         good={good} 
         neutral={neutral} 
         bad={bad}
+        countAll={total}
+        countAverage={average}
+        countPositive={positivePercentage}
       />
     </div>
   )
