@@ -21,23 +21,38 @@ const App = () => {
     const addPerson = (event) => {
         event.preventDefault();
 
-        if (persons.some((person) => person.name === newName)) {
-            alert(`${newName} is already added to phonebook`);
-            return;
+        const existingPerson = persons.find(person => person.name === newName);
+
+        if (existingPerson) {
+            if (window.confirm(
+                `${newName} on jo puhelinluettelossa, korvataanko vanha numero uudella?`
+            )) {
+                const changedPerson = { ...existingPerson, number: newNumber };
+
+                puhelinluetteloService
+                    .update(existingPerson.id, changedPerson)
+                    .then(returnedPerson => {
+                        setPersons(persons.map(person =>
+                            person.id !== existingPerson.id ? person : returnedPerson
+                        ));
+                        setNewName("");
+                        setNewNumber("");
+                    });
+            }
+        } else {
+            const personObject = {
+                name: newName,
+                number: newNumber,
+            };
+
+            puhelinluetteloService
+                .create(personObject)
+                .then((returnedPerson) => {
+                    setPersons(persons.concat(returnedPerson));
+                    setNewName("");
+                    setNewNumber("");
+                });
         }
-
-        const personObject = {
-            name: newName,
-            number: newNumber,
-        };
-
-        puhelinluetteloService
-            .create(personObject)
-            .then((returnedPerson) => {
-                setPersons(persons.concat(returnedPerson));
-                setNewName("");
-                setNewNumber("");
-            });
     };
 
     const deletePerson = (id, name) => {
