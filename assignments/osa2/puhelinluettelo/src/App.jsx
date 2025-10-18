@@ -40,6 +40,16 @@ const App = () => {
             });
     };
 
+    const deletePerson = (id, name) => {
+        if (window.confirm(`Delete ${name}?`)) {
+            puhelinluetteloService
+                .remove(id)
+                .then(() => {
+                    setPersons(persons.filter((person) => person.id !== id));
+                });
+        }
+    };
+
     const handleNameChange = (event) => {
         setNewName(event.target.value);
     };
@@ -71,7 +81,7 @@ const App = () => {
                 onNumberChange={handleNumberChange}
               />
             <h3>Numbers</h3>
-            <Persons persons={personsToFilter} />
+            <Persons persons={personsToFilter} onDelete={deletePerson} />
         </div>
     );
 };
