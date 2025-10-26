@@ -1,0 +1,16 @@
+body {
+    background-color: bisque;
+    font-family: Arial, sans-serif;
+    font-size: large;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .content {
+    max-width: 800px;
+    width: 100%;
+  }
