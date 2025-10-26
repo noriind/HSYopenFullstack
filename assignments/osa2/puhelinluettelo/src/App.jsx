@@ -59,6 +59,7 @@ const App = () => {
                         );
                     })
                     .catch((error) => {
+                        console.error("error updating person:", error),
                         showNotification(
                             `Henkilö '${existingPerson.name}' on jo poistettu palvelimelta.`,
                             "error"
@@ -88,6 +89,7 @@ const App = () => {
                     );
                 })
                 .catch((error) => {
+                    console.log("error adding person:", error),
                     showNotification(
                         `Henkilön lisääminen epäonnistui: ${error.response.data.error}`,
                         "error"
@@ -105,6 +107,7 @@ const App = () => {
                     showNotification(`Poistettiin ${name}`, "success");
                 })
                 .catch((error) => {
+                    console.error("error deleting person:", error),
                     showNotification(
                         `Henkilö '${name}' on jo poistettu palvelimelta.`,
                         "error"

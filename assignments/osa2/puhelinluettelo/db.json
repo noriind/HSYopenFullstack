@@ -1,34 +1,9 @@
 {
   "persons": [
     {
-      "name": "Ada Lovelace",
-      "number": "0003330030",
-      "id": "2"
-    },
-    {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": "3"
-    },
-    {
       "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": "4"
-    },
-    {
-      "id": "5",
-      "name": "ruuti",
-      "number": "040567890"
-    },
-    {
-      "id": "6",
-      "name": "boser",
-      "number": "0403506660"
-    },
-    {
-      "id": "7",
-      "name": "cuutor",
-      "number": "0506704055"
     },
     {
       "id": "cb58",
@@ -39,6 +14,16 @@
       "id": "cbb6",
       "name": "buutor",
       "number": "040506444"
+    },
+    {
+      "id": "c7c5",
+      "name": "Ada Lovelace",
+      "number": "050677885"
+    },
+    {
+      "id": "faae",
+      "name": "cuutor",
+      "number": "0506604040"
     }
   ]
 }
