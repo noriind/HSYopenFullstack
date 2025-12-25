@@ -87,7 +87,7 @@ app.post('/api/persons', (request, response) => {
   const nameExists = persons.find(person => person.name === body.name)
   if (nameExists) {
     return response.status(400).json({
-      error: 'Name must be uniqueeee'
+      error: 'Name must be unique'
     })
   }
 
@@ -102,7 +102,7 @@ app.post('/api/persons', (request, response) => {
   response.json(person)
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
