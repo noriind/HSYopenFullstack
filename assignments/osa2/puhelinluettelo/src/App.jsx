@@ -28,75 +28,75 @@ const App = () => {
 
     const addPerson = (event) => {
         event.preventDefault();
-
+      
         const existingPerson = persons.find(
-            (person) => person.name === newName
+          (person) => person.name === newName
         );
-
+      
         if (existingPerson) {
-            if (
-                window.confirm(
-                    `${newName} on jo puhelinluettelossa, korvataanko vanha numero uudella?`
-                )
-            ) {
-                const changedPerson = { ...existingPerson, number: newNumber };
-
-                puhelinluetteloService
-                    .update(existingPerson.id, changedPerson)
-                    .then((returnedPerson) => {
-                        setPersons(
-                            persons.map((person) =>
-                                person.id !== existingPerson.id
-                                    ? person
-                                    : returnedPerson
-                            )
-                        );
-                        setNewName("");
-                        setNewNumber("");
-                        showNotification(
-                            `Muutettiin ${returnedPerson.name} numero`,
-                            "success"
-                        );
-                    })
-                    .catch((error) => {
-                        console.error("error updating person:", error),
-                        showNotification(
-                            `Henkilö '${existingPerson.name}' on jo poistettu palvelimelta.`,
-                            "error"
-                        );
-                        setPersons(
-                            persons.filter(
-                                (person) => person.id !== existingPerson.id
-                            )
-                        );
-                    });
-            }
-        } else {
-            const personObject = {
-                name: newName,
-                number: newNumber,
-            };
-
+          if (
+            window.confirm(
+              `${newName} on jo puhelinluettelossa, korvataanko vanha numero uudella?`
+            )
+          ) {
+            const changedPerson = { ...existingPerson, number: newNumber };
+      
             puhelinluetteloService
-                .create(personObject)
-                .then((returnedPerson) => {
-                    setPersons(persons.concat(returnedPerson));
-                    setNewName("");
-                    setNewNumber("");
-                    showNotification(
-                        `Lisättiin ${returnedPerson.name}`,
-                        "success"
-                    );
-                })
-                .catch((error) => {
-                    console.log("error adding person:", error),
-                    showNotification(
-                        `Henkilön lisääminen epäonnistui: ${error.response.data.error}`,
-                        "error"
-                    );
-                });
+              .update(existingPerson.id, changedPerson)
+              .then((returnedPerson) => {
+                setPersons(
+                  persons.map((person) =>
+                    person.id !== existingPerson.id ? person : returnedPerson
+                  )
+                );
+                setNewName("");
+                setNewNumber("");
+                showNotification(
+                  `Muutettiin ${returnedPerson.name} numero`,
+                  "success"
+                );
+              })
+              .catch((error) => {
+                console.error("error updating person:", error);
+                // Näytä virheilmoitus
+                if (error.response && error.response.data && error.response.data.error) {
+                  showNotification(error.response.data.error, "error");
+                } else {
+                  showNotification(
+                    `Henkilö '${existingPerson.name}' on jo poistettu palvelimelta.`,
+                    "error"
+                  );
+                }
+                setPersons(
+                  persons.filter((person) => person.id !== existingPerson.id)
+                );
+              });
+          }
+        } else {
+          const personObject = {
+            name: newName,
+            number: newNumber,
+          };
+      
+          puhelinluetteloService
+            .create(personObject)
+            .then((returnedPerson) => {
+              setPersons(persons.concat(returnedPerson));
+              setNewName("");
+              setNewNumber("");
+              showNotification(`Lisättiin ${returnedPerson.name}`, "success");
+            })
+            .catch((error) => {
+              console.log("error adding person:", error);
+              // Näytä validointivirhe käyttäjälle
+              if (error.response && error.response.data && error.response.data.error) {
+                showNotification(error.response.data.error, "error");
+              } else {
+                showNotification("Henkilön lisääminen epäonnistui", "error");
+              }
+            });
         }
-    };
+      };
 
     const deletePerson = (id, name) => {
         if (window.confirm(`Delete ${name}?`)) {
