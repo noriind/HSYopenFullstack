@@ -33,6 +33,7 @@ app.get('/info', (request, response) => {
   })
 })
 
+//3.18
 app.get('/api/persons/:id', (request, response) => {
   Person.findById(request.params.id)
     .then(person => {
@@ -78,6 +79,21 @@ app.post('/api/persons', (request, response) => {
   person.save().then(savedPerson => {
     response.json(savedPerson)
   })
+})
+
+//3.17
+app.put('/api/persons/:id', (request, response, next) => {
+  const { name, number } = request.body
+
+  Person.findByIdAndUpdate(
+    request.params.id,
+    { name, number },
+    { new: true, runValidators: true, context: 'query' }
+  )
+    .then(updatedPerson => {
+      response.json(updatedPerson)
+    })
+    .catch(error => next(error))
 })
 
 //3.16
