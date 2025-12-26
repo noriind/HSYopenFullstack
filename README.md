@@ -12,6 +12,7 @@ API Endpoints:
 - GET /api/persons
 - GET /api/persons/:id
 - POST /api/persons
+- PUT /api/persons/:id
 - DELETE /api/persons/:id
 - GET /info
 

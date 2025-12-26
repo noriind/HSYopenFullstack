@@ -10,7 +10,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static('dist'))
 
-morgan.token('body', (request, response) => {
+morgan.token('body', (request) => {
   return JSON.stringify(request.body)
 })
 
@@ -50,18 +50,15 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 //3.15
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
-    .catch(error => {
-      console.log(error)
-      response.status(400).send({ error: 'malformatted id' })
-    })
+    .catch(error => next(error))
 })
 
-//3.14 
+//3.14
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
