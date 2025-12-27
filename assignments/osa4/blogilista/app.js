@@ -23,4 +23,23 @@ app.use(express.json())
 
 app.use('/api/blogs', blogsRouter)
 
+//4.12
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  logger.error(error.message)
+
+  if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  }
+
+  next(error)
+}
+
+app.use(errorHandler)
+
 module.exports = app
