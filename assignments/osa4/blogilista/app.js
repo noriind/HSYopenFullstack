@@ -2,10 +2,12 @@ const config = require('./utils/config')
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const blogsRouter = require('./controllers/blogs')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
+
+const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 
 mongoose.set('strictQuery', false)
 
@@ -25,6 +27,9 @@ app.use(express.json())
 app.use('/api/blogs', blogsRouter)
 //4.15
 app.use('/api/users', usersRouter)
+//4.18
+app.use('/api/login', loginRouter)
+
 
 //4.12
 const unknownEndpoint = (request, response) => {
@@ -44,6 +49,9 @@ const errorHandler = (error, request, response, next) => {
   } //4.16
   else if (error.name === 'MongoServerError' && error.message.includes('E11000 duplicate key')) {
     return response.status(400).json({ error: 'expected `username` to be unique'})
+  } //4.18
+  else if (error.name === 'JsonWebTokenError'){
+    return response.status(401).json({ error: 'invalid token'})
   }
 
   next(error)
