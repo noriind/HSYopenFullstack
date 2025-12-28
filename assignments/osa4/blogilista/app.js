@@ -5,6 +5,7 @@ const cors = require('cors')
 const blogsRouter = require('./controllers/blogs')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
+const usersRouter = require('./controllers/users')
 
 mongoose.set('strictQuery', false)
 
@@ -22,6 +23,8 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/blogs', blogsRouter)
+//4.15
+app.use('/api/users', usersRouter)
 
 //4.12
 const unknownEndpoint = (request, response) => {
