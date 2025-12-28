@@ -9,6 +9,8 @@ const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
 
+const middleware = require('./utils/middleware')
+
 mongoose.set('strictQuery', false)
 
 logger.info('connecting to', config.MONGODB_URI)
@@ -23,6 +25,8 @@ mongoose.connect(config.MONGODB_URI)
 
 app.use(cors())
 app.use(express.json())
+//4.19
+app.use(middleware.tokenExtractor)
 
 app.use('/api/blogs', blogsRouter)
 //4.15
@@ -52,6 +56,9 @@ const errorHandler = (error, request, response, next) => {
   } //4.18
   else if (error.name === 'JsonWebTokenError'){
     return response.status(401).json({ error: 'invalid token'})
+  } //4.19
+  else if (error.name ==='TokenExpiredError') {
+    return response.status(401).json({ error: 'token expired' })
   }
 
   next(error)
