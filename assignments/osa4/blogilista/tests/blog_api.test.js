@@ -120,6 +120,104 @@ describe("addition of a new blog", () => {
     });
 });
 
+//4.13
+describe('deletion of a blog', () => {
+    beforeEach(async () => {
+      await Blog.deleteMany({})
+      await Blog.insertMany(helper.initialBlogs)
+    })
+  
+    test('succeeds with status 204 if id is valid', async () => {
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToDelete = blogsAtStart[0]
+  
+      await api
+        .delete(`/api/blogs/${blogToDelete.id}`)
+        .expect(204)
+  
+      const blogsAtEnd = await helper.blogsInDb()
+  
+      assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
+  
+      const titles = blogsAtEnd.map(blog => blog.title)
+      assert(!titles.includes(blogToDelete.title))
+    })
+  
+    test('fails with status 400 if id is invalid', async () => {
+      const invalidId = '5a3d5da59070081a82a3445'
+  
+      await api
+        .delete(`/api/blogs/${invalidId}`)
+        .expect(400)
+    })
+})
+
+//4.14
+describe('updating a blog', () => {
+    beforeEach(async () => {
+      await Blog.deleteMany({})
+      await Blog.insertMany(helper.initialBlogs)
+    })
+  
+    test('succeeds with valid data', async () => {
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToUpdate = blogsAtStart[0]
+  
+      const updatedData = {
+        title: blogToUpdate.title,
+        author: blogToUpdate.author,
+        url: blogToUpdate.url,
+        likes: blogToUpdate.likes + 10
+      }
+  
+      await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send(updatedData)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+  
+      const blogsAtEnd = await helper.blogsInDb()
+      const updatedBlog = blogsAtEnd.find(blog => blog.id === blogToUpdate.id)
+  
+      assert.strictEqual(updatedBlog.likes, blogToUpdate.likes + 10)
+    })
+  
+    test('fails with status 400 if id is invalid', async () => {
+      const invalidId = '5a3d5da59070081a82a3445'
+  
+      const updatedData = {
+        title: 'Test',
+        author: 'Test',
+        url: 'http://test.com',
+        likes: 10
+      }
+  
+      await api
+        .put(`/api/blogs/${invalidId}`)
+        .send(updatedData)
+        .expect(400)
+    })
+  
+    test('likes can be updated independently', async () => {
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToUpdate = blogsAtStart[0]
+  
+      const updatedData = {
+        likes: 100
+      }
+  
+      await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send(updatedData)
+        .expect(200)
+  
+      const blogsAtEnd = await helper.blogsInDb()
+      const updatedBlog = blogsAtEnd.find(blog => blog.id === blogToUpdate.id)
+  
+      assert.strictEqual(updatedBlog.likes, 100)
+    })
+})
+
 after(async () => {
     await mongoose.connection.close();
 });
