@@ -1,0 +1,24 @@
+:root {
+    background-color: rgb(146, 159, 123);
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+
+.success {
+    color: rgb(40, 63, 4);
+    background: rgb(173, 230, 176);
+    font-size: 20px;
+    border-style: rounded;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.error {
+    color: red;
+    background: rgb(223, 138, 102);
+    font-size: 20px;
+    border-style: rounded;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
