@@ -1,20 +1,14 @@
-//const jwt = require('jsonwebtoken')
-//const config = require('../utils/config')
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-//4.17
-//const User = require('../models/user')
-//step 10
 const middleware = require('../utils/middleware')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
-  .find({})
-  .populate('user', { username: 1, name: 1})
+    .find({})
+    .populate('user', { username: 1, name: 1 })
   response.json(blogs)
 })
 
-//step 10
 blogsRouter.post('/', middleware.userExtractor, async (request, response, next) => {
   const body = request.body
 
@@ -46,25 +40,24 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, n
     const blog = await Blog.findById(request.params.id)
 
     if (!blog){
-      return response.status(404).json({error:'blog not found'})
+      return response.status(404).json({ error:'blog not found' })
     }
 
     if(!blog.user){
-      return response.status(400).json({error: 'blog has no user assigned'})
+      return response.status(400).json({ error: 'blog has no user assigned' })
     }
 
     if (blog.user.toString() === user._id.toString()){
       await Blog.findByIdAndDelete(request.params.id)
       response.status(204).end()
     } else {
-      return response.status(403).json({error:'permission denied'})
+      return response.status(403).json({ error:'permission denied' })
     }
   } catch (exception) {
     next(exception)
   }
 })
 
-//4.14
 blogsRouter.put('/:id', async (request, response, next) => {
   const body = request.body
 

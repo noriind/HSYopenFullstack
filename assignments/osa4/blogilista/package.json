@@ -7,7 +7,9 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development node --watch index.js",
     "test": "cross-env NODE_ENV=test node --test --test-concurrency=1",
-    "test:watch": "cross-env NODE_ENV=test node --test --watch"
+    "test:watch": "cross-env NODE_ENV=test node --test --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +23,9 @@
     "mongoose": "^8.1.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "cross-env": "^10.1.0",
+    "eslint": "^9.39.2",
     "nodemon": "^3.0.3",
     "supertest": "^7.1.4"
   }
