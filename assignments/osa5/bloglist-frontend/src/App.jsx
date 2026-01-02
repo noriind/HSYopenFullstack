@@ -79,6 +79,19 @@ const App = () => {
       showNotification('Failed to create blog', 'error')
     }
   }
+
+  const updateBlog = async (id, blogObject) => {
+    try {
+      const returnedBlog = await blogService.update(id, blogObject)
+      setBlogs(blogs.map(blog => 
+        blog.id !== id 
+          ? blog 
+          : { ...returnedBlog, user: blog.user } 
+      ))
+    } catch (exception) {
+      showNotification('Failed to update blog', 'error')
+    }
+  }
     
 
   const loginForm = () => (
@@ -128,7 +141,11 @@ const App = () => {
           </Togglable>
 
           {blogs.map((blog) => 
-              <Blog key={blog.id} blog={blog} />
+              <Blog 
+              key={blog.id} 
+              blog={blog}
+              updateBlog={updateBlog} 
+              />
           )}
       </div>
   );
