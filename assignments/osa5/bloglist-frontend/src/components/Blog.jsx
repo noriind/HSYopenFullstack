@@ -51,7 +51,7 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
           hide
         </button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} data-testid='blogDetails'>
         <div>{blog.url}</div>
         <div>
           likes {blog.likes}
