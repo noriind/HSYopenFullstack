@@ -54,9 +54,11 @@ const App = () => {
       setUsername('')
       setPassword('')
       showNotification(`${user.name} Logged in!`, 'success')
-    } catch (error) {
-      showNotification('Wrong username or password', error)
-      console.log('Incorrect credentials.')
+      const blogs = await blogService.getAll()
+      setBlogs(blogs)
+    
+    } catch (exception) {
+      showNotification('Wrong username or password', 'error')
     }
   }
 
@@ -71,7 +73,8 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
     try{
       const returnedBlog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(returnedBlog))
+      const blogWithUser = { ...returnedBlog, user: user }
+      setBlogs(blogs.concat(blogWithUser))
       showNotification(
         `A new blog ${returnedBlog.title} by ${returnedBlog.author} added`, 'success'
       )
